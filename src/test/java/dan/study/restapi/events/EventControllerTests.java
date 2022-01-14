@@ -115,19 +115,27 @@ public class EventControllerTests {
         EventDto eventDto = EventDto.builder()
                 .name("Spring")
                 .description("REST API Development with Spring")
-                .beginEnrollmentDateTime(LocalDateTime.of(2021,12,26,14,40))
-                .closeEnrollmentDateTime(LocalDateTime.of(2021,12,25,14,40))
-                .beginEventDateTime(LocalDateTime.of(2021,12,24,14,40))
-                .endEventDateTime(LocalDateTime.of(2021,12,23,14,40))
-                .basePrice(1000)
+                .beginEnrollmentDateTime(LocalDateTime.of(2021,12,25,14,40))
+                .closeEnrollmentDateTime(LocalDateTime.of(2021,12,26,14,40))
+                .beginEventDateTime(LocalDateTime.of(2021,12,25,14,40))
+                .endEventDateTime(LocalDateTime.of(2021,12,26,14,40))
+                .basePrice(10000)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("강남역 D2 스타텁 팩토리")
                 .build();
 
-        this.mockMvc.perform(post("/api/events"))
+        this.mockMvc.perform(post("/api/events")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[0].objectName").exists())
+                //.andExpect(jsonPath("$[0].field").exists())
+                .andExpect(jsonPath("$[0].defaultMessage").exists())
+                .andExpect(jsonPath("$[0].code").exists())
+               // .andExpect(jsonPath("$[0].rejectedValue").exists())
+                ;
     }
 
 
