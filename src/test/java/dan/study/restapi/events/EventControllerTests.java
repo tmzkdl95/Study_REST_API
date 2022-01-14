@@ -2,6 +2,7 @@ package dan.study.restapi.events;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dan.study.restapi.common.TestDescription;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +49,7 @@ public class EventControllerTests {
 
 
     @Test
+    @TestDescription("정상적으로 이벤트를 생성하는 테스트")
     public void createEvent() throws Exception {
         //request를 위해 필요 값 셋팅
         EventDto event = EventDto.builder()
@@ -95,15 +97,20 @@ public class EventControllerTests {
 
 
     @Test
+    @TestDescription("입력값이 비어있는 경우에 에러가 발생하는 테스트")
     public void createEvent_Bad_Request_Empty_Input() throws Exception {
         EventDto eventDto = EventDto.builder().build();
 
-        this.mockMvc.perform(post("/api/events"))
+        this.mockMvc.perform(post("/api/events")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(eventDto)))
+                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
 
     @Test
+    @TestDescription("입력값이 잘못된 경우에 이벤트를 생성하는 테스트")
     public void createEvent_Bad_Request_Wrong_Input() throws Exception {
         EventDto eventDto = EventDto.builder()
                 .name("Spring")
@@ -119,6 +126,7 @@ public class EventControllerTests {
                 .build();
 
         this.mockMvc.perform(post("/api/events"))
+                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
