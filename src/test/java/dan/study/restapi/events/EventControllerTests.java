@@ -77,9 +77,9 @@ public class EventControllerTests {
 
         //http스펙으로 웹서버를 실행하지 않고 테스트 할 수 있는 메서드
                mockMvc.perform(post("/api/events/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaTypes.HAL_JSON)
-                .content(objectMapper.writeValueAsString(event)))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaTypes.HAL_JSON)
+                    .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
                 .andExpect(status().isCreated())
 //                .andExpect(jsonPath("id").exists())
@@ -88,9 +88,9 @@ public class EventControllerTests {
                 .andExpect(jsonPath("free").value(Matchers.not(true)))
                 .andExpect(jsonPath("offline").value(true))
 //                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
-                .andExpect(jsonPath("_link.self").exists())
-                .andExpect(jsonPath("_link.query-events").exists())
-                .andExpect(jsonPath("_link.update-event").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.query-events").exists())
+                .andExpect(jsonPath("_links.update-event").exists())
 
             ;
     }

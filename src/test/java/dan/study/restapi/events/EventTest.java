@@ -1,8 +1,10 @@
 package dan.study.restapi.events;
 
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 
 public class EventTest {
 
